@@ -1,0 +1,36 @@
+<VirtualHost *:80>
+ServerAdmin webmaster@localhost
+DocumentRoot /var/www/html
+
+ServerName www.citizencaresocietykgf.com
+ServerAlias citizencaresocietykgf.com
+Redirect permanent / https://www.citizencaresocietykgf.com/
+
+<Directory />
+Options FollowSymLinks
+AllowOverride None
+</Directory>
+<Directory /var/www/html/>
+Options Indexes FollowSymLinks MultiViews
+AllowOverride All
+Order allow,deny
+allow from all
+</Directory>
+ScriptAlias /cgi-bin/ /usr/lib/cgi-bin/
+<Directory "/usr/lib/cgi-bin">
+AllowOverride None
+Options +ExecCGI -MultiViews +SymLinksIfOwnerMatch
+Order allow,deny
+Allow from all
+</Directory>
+ErrorLog ${APACHE_LOG_DIR}/error.log
+# Possible values include: debug, info, notice, warn, error, crit,
+# alert, emerg.
+LogLevel warn
+CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+
+sudo apt update
+sudo apt install snapd
+
+sudo certbot --authenticator standalone --installer apache -d <citizencaresocietykgf.com> --pre-hook "systemctl stop apache2" --post-hook "systemctl start apache2"
